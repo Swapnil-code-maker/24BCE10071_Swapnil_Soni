@@ -1,0 +1,47 @@
+SHOW DATABASES;
+
+CREATE DATABASE VITBhopal;
+
+USE VITBhopal;
+
+CREATE TABLE CSEBranch(
+    studentid INT,
+    studentname VARCHAR(50),
+    studentmarks INT
+);
+
+CREATE TABLE EEEBranch(
+    studentid INT,
+    studentname VARCHAR(50),
+    studentmarks INT
+);
+
+CREATE TABLE MechBranch(
+    studentid INT,
+    studentname VARCHAR(50),
+    studentmarks INT
+);
+
+SHOW TABLES FROM VITBhopal;
+
+INSERT INTO CSEBranch VALUES (101,'Swapnil',98);
+INSERT INTO CSEBranch VALUES (102,'Manas',100);
+INSERT INTO CSEBranch VALUES (103,'Tuhinsh',91);
+INSERT INTO CSEBranch VALUES (104,'Anushka',100);
+INSERT INTO CSEBranch VALUES (105,'Sneha',95);
+
+INSERT INTO EEEBranch VALUES (101,'Swapnil',98);
+INSERT INTO EEEBranch VALUES (102,'Manas',100);
+INSERT INTO EEEBranch VALUES (103,'Tuhinsh',91);
+INSERT INTO EEEBranch VALUES (104,'Anushka',100);
+INSERT INTO EEEBranch VALUES (105,'Sneha',95);
+
+INSERT INTO MechBranch VALUES (101,'Swapnil',98);
+INSERT INTO MechBranch VALUES (102,'Manas',100);
+INSERT INTO MechBranch VALUES (103,'Tuhinsh',91);
+INSERT INTO MechBranch VALUES (104,'Anushka',100);
+INSERT INTO MechBranch VALUES (105,'Sneha',95);
+
+SELECT * FROM CSEBranch;
+
+DROP DATABASE VITBhopal;
