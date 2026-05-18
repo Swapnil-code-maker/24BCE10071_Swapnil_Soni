@@ -1,0 +1,102 @@
+-----------------------------------------------------------------------------------------------------
+Task-1
+-----------------------------------------------------------------------------------------------------
+Show Databases;
+Show Tables from VITBhopal;
+Select * from CSEBranch;
+Desc CSEBranch;
+ALTER TABLE CSEBranch ADD(
+    studentPhn int8, studentPhn2 int8
+);
+Insert into CSEBranch values (106,"Shriya",95,9874563210,8956875465);
+ALTER TABLE CSEBranch DROP COLUMN studentPhn;
+ALTER TABLE CSEBranch DROP COLUMN studentPhn2;
+ALTER TABLE CSEBranch ADD(
+    studentCountry varchar(30) DEFAULT 'INDIA'
+);
+Insert into CSEBranch values (107,"Debansh",99,'SriLanka');
+ALTER TABLE CSEBranch RENAME column studentCountry TO studentLocation;
+TRUNCATE TABLE CSEBranch;
+ALTER TABLE CSEBranch DROP COLUMN studentLocation;
+DROP TABLE CSEBranch;
+
+
+
+-----------------------------------------------------------------------------------------------------
+Task-2 
+-----------------------------------------------------------------------------------------------------
+
+Create Database Workers;
+CREATE TABLE Worker (
+	WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	FIRST_NAME CHAR(25),
+	LAST_NAME CHAR(25),
+	SALARY INT(15),
+	JOINING_DATE DATETIME,
+	DEPARTMENT CHAR(25)
+);
+
+INSERT INTO Worker 
+	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
+		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
+		(003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
+		(004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
+		(005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
+		(006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
+		(007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
+		(008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+Select * from Worker;
+UPDATE worker SET First_name='Swapnil',Last_name='Soni' WHERE worker_id=1;
+UPDATE worker SET First_name='Manas',Last_name='Saraf' WHERE worker_id=2;
+
+UPDATE worker SET Department='HR' WHERE worker_id=2;
+UPDATE worker SET Salary=200000 WHERE worker_id=2;
+UPDATE worker SET salary = salary+3500;
+DELETE FROM worker WHERE worker_id=3;
+DELETE FROM worker WHERE worker_id=4;
+
+-- 1. Workers having salary greater than 100000
+SELECT * FROM Worker WHERE Salary > 100000;
+
+-- 2. Workers belonging to HR department
+SELECT * FROM Worker WHERE Department = 'HR';
+
+-- 3.Workers with salary between 100000 and 300000
+SELECT * FROM Worker WHERE Salary >= 100000 AND Salary <= 300000;
+
+ -- 4.Workers whose first name is Swapnil
+SELECT * FROM Worker WHERE First_name = 'Swapnil';
+
+--5. Workers joined after 2014-03-01
+SELECT * FROM Worker WHERE Joining_Date > '2014-03-01';
+
+-----------------------------------------------------------------------------------------------------
+Task-3
+-----------------------------------------------------------------------------------------------------
+
+CREATE TABLE Employee (
+Ename varchar(20),
+Eid int 
+);
+START TRANSACTION;
+
+INSERT INTO Employee VALUES ('Swapnil',101);
+INSERT INTO Employee VALUES ('Manas',102);
+
+SAVEPOINT time15;
+
+INSERT INTO Employee VALUES ('Tuhinsh',103);
+
+SAVEPOINT time16;
+
+ROLLBACK TO time15;
+
+SELECT * FROM Employee;
+
+Commit;
+
+
+
+
+
