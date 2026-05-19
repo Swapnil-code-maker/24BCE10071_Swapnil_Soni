@@ -1,0 +1,131 @@
+Show databases;
+
+USE WORKERS;
+
+Select * from Worker;
+
+Select * from Worker Where Department IN ('HR', 'Admin');
+
+Select Worker_ID, First_Name, Department, Salary FROM Worker 
+WHERE Worker_ID IN (1,3,5);
+
+Select First_Name, Salary FROM Worker
+WHERE Salary IN (100000,200000);
+
+Select * FROM Worker
+WHERE Worker_ID NOT IN (2,4,6);
+
+Select First_Name, Department
+FROM Worker WHERE Department NOT IN ('HR','Account');
+
+Select * FROM Worker
+WHERE Worker_ID NOT BETWEEN 2 AND 5;
+
+SELECT *FROM Worker  WHERE Department = 'HR'
+AND Salary > 100000;
+
+SELECT * FROM Worker
+WHERE Department = 'Account' AND Salary < 100000;
+
+SELECT * FROM Worker
+WHERE Department NOT IN ('Admin') AND Salary NOT BETWEEN 100000 AND 300000;
+
+SELECT * FROM Worker
+WHERE First_Name LIKE 'M%';
+
+SELECT * FROM Worker
+WHERE First_Name LIKE '%a';
+
+SELECT *FROM Worker WHERE First_Name LIKE '______';
+
+SELECT *FROM Worker WHERE First_Name LIKE 'V____';
+
+SELECT * FROM Worker WHERE First_Name LIKE '__s%';
+
+select min(salary) from worker where department='admin' and first_name not like '%a%';
+
+Select min(Salary)FROM Worker;
+
+Select Min(Salary) FROM Worker
+WHERE Department='Admin';
+
+Select Min(Salary) From Worker
+WHERE Department='HR';
+
+Select Sum(Salary) From Worker
+WHERE Department='HR';
+
+Select Avg(Salary)FROM Worker;
+
+Select Avg(Salary)FROM Worker WHERE Department='Admin';
+
+Select count(worker_id) FROM Worker;
+
+SELECT first_name FROM worker WHERE department='HR'
+UNION
+SELECT first_name FROM worker WHERE department='Account';
+
+SELECT salary FROM worker WHERE salary > 100000
+UNION
+SELECT salary FROM worker WHERE salary < 100000;
+
+SELECT salary FROM worker
+UNION ALL
+SELECT salary FROM worker;
+
+Select salary AS EmployeeSalary From worker;
+
+Select  first_name AS Name, department AS Dept,salary AS Income FROM worker;
+
+SELECT Distinct(department) FROM worker;
+
+SELECT Distinct(first_name) FROM worker;
+
+SELECT worker_id, first_name,
+Case
+    WHEN salary > 300000 THEN 'Rich people'
+    WHEN salary >= 100000 and salary <299999 THEN 'Middle'
+    Else 'Poor'
+End AS Status
+From worker;
+
+SELECT first_name,
+Case
+    WHEN department='HR' THEN 'Human Resource'
+    WHEN department='Admin' THEN 'Administration'
+    Else 'Other'
+End AS DepartmentType
+From worker;
+
+CREATE VIEW hrEmployees AS SELECT *FROM worker
+WHERE department='HR';
+
+SELECT * FROM hrEmployees;
+
+CREATE VIEW avgSalary AS SELECT Avg(salary) AS AverageSalary FROM worker;
+
+CREATE VIEW employeeStatus AS
+SELECT first_name, salary,
+CASE
+    WHEN salary > 300000 THEN 'Rich'
+    WHEN salary BETWEEN 100000 AND 299999 THEN 'Middle'
+    ELSE 'Poor'
+END AS Status
+FROM worker;
+
+SELECT * FROM employeeStatus;
+
+CREATE VIEW topWorkers AS SELECT first_name, salary FROM worker
+WHERE salary >= 300000;
+
+CREATE VIEW maxSalaryAdmin AS
+SELECT MAX(salary) AS MaximumSalary
+FROM worker
+WHERE department='admin';
+SELECT * FROM minSalaryAdmin;
+SELECT * FROM maxSalaryAdmin;
+
+DROP VIEW minSalaryAdmin;
+
+
+
