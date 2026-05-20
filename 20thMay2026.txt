@@ -1,0 +1,136 @@
+CREATE TABLE VITBhopal_Students (
+    
+    StudentID INT PRIMARY KEY,
+    
+    FirstName VARCHAR(50) NOT NULL,
+    
+    LastName VARCHAR(50) NOT NULL,
+    
+    Email VARCHAR(100) UNIQUE
+    );
+
+
+INSERT INTO VITBhopal_Students
+VALUES (101,'Swapnil','Soni','swapnil@gmail.com');
+
+INSERT INTO VITBhopal_Students
+VALUES (102,'Anushka','Soni','anushka@gmail.com');
+
+SELECT * FROM VITBhopal_Students;
+
+ALTER TABLE VITBhopal_Students
+ADD Age INT;
+
+DESC VITBhopal_Students;
+
+ALTER TABLE VITBhopal_Students
+ADD City VARCHAR(50),
+ADD CGPA DECIMAL(3,2);
+
+UPDATE VITBhopal_Students
+SET Age = 20
+WHERE Age IS NULL;
+
+ALTER TABLE VITBhopal_Students
+MODIFY Age INT NOT NULL;
+
+UPDATE VITBhopal_Students
+SET City = 'Bhopal'
+WHERE StudentID = 101;
+
+UPDATE VITBhopal_Students
+SET City = 'Ujjain'
+WHERE StudentID = 102;
+
+ALTER TABLE VITBhopal_Students
+ADD CONSTRAINT chk_age
+CHECK (Age >= 18);
+
+INSERT INTO VITBhopal_Students
+VALUES (103,'Rahul','Verma','rahul@gmail.com',20,'Bhopal',8.5);
+
+
+UPDATE VITBhopal_Students
+SET Age = 21
+WHERE StudentID = 102;
+
+UPDATE VITBhopal_Students
+SET Age = 22
+WHERE StudentID = 103;
+
+ALTER TABLE VITBhopal_Students
+ADD UNIQUE (Age);
+
+ALTER TABLE VITBhopal_Students
+DROP INDEX Age;
+
+ALTER TABLE VITBhopal_Students
+MODIFY City VARCHAR(50) DEFAULT 'Bhopal';
+
+
+CREATE TABLE products(
+
+    pid INT PRIMARY KEY,
+
+    pname VARCHAR(100) NOT NULL,
+
+    prefNo INT NOT NULL UNIQUE
+
+);
+
+
+INSERT INTO products
+VALUES (101,'Laptop',19929);
+
+INSERT INTO products
+VALUES (102,'Mobile',19930);
+
+INSERT INTO products
+VALUES (103,'Keyboard',19931);
+
+
+Drop table products;
+
+
+
+
+CREATE TABLE category(
+
+    cid INT PRIMARY KEY,
+
+    cname VARCHAR(100) NOT NULL
+
+);
+INSERT INTO category
+VALUES (101,'Electronics');
+
+INSERT INTO category
+VALUES (102,'Furniture');
+
+INSERT INTO category
+VALUES (103,'Clothing');
+
+SELECT * FROM category;
+
+CREATE TABLE products(
+
+    pid INT PRIMARY KEY,
+
+    pname VARCHAR(100) NOT NULL,
+
+    cid INT,
+
+    FOREIGN KEY (cid) REFERENCES category(cid)
+
+);
+
+INSERT INTO products
+VALUES (1,'Laptop',101);
+
+INSERT INTO products
+VALUES (2,'Chair',102);
+
+INSERT INTO products
+VALUES (3,'T-Shirt',103);
+
+SELECT * FROM products;
