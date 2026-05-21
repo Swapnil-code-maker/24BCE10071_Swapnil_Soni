@@ -1,0 +1,98 @@
+CREATE TABLE category(
+
+    cid INT PRIMARY KEY,
+
+    cname VARCHAR(100) NOT NULL
+
+);
+INSERT INTO category
+VALUES (101,'Electronics');
+
+INSERT INTO category
+VALUES (102,'Furniture');
+
+INSERT INTO category
+VALUES (103,'Clothing');
+
+CREATE TABLE products(
+
+    pid INT PRIMARY KEY,
+
+    pname VARCHAR(100) NOT NULL,
+
+    cid INT,
+
+    FOREIGN KEY (cid) REFERENCES category(cid) On Delete Cascade
+
+);
+
+DROP TABLE products;
+
+CREATE TABLE products(
+
+    pid INT PRIMARY KEY,
+
+    pname VARCHAR(100) NOT NULL,
+
+    cid INT,
+
+    FOREIGN KEY (cid)
+    REFERENCES category(cid)  On Update Cascade
+
+);
+
+SELECT * FROM Worker
+ORDER BY Salary DESC;
+
+SELECT * FROM Worker
+ORDER BY First_name ASC;
+
+SELECT First_name, Department, Salary FROM Worker
+WHERE Department = 'Admin' ORDER BY Salary DESC;
+
+SELECT Department, COUNT(worker_id) AS Total_Employees 
+FROM Worker GROUP BY Department;
+
+SELECT Department, COUNT(Department) FROM Worker
+GROUP BY Department;
+
+SELECT Department, COUNT(Department) FROM Worker
+GROUP BY Department ORDER BY Department ASC;
+
+SELECT Department, SUM(Salary)
+FROM Worker GROUP BY Department;
+
+SELECT Department, AVG(Salary)
+FROM Worker GROUP BY Department;
+
+SELECT Department, COUNT(*) 
+FROM Worker GROUP BY Department
+HAVING COUNT(*) > 3;
+
+SELECT Department, SUM(Salary) 
+FROM Worker GROUP BY Department
+HAVING SUM(Salary) < 300000;
+
+SELECT * FROM Worker LIMIT 4 OFFSET 3;
+
+CREATE TABLE Toppers (
+    id INT
+);
+
+INSERT INTO Toppers VALUES
+(1),(6),(7);
+
+SELECT worker_id, first_name, department
+FROM Worker
+WHERE worker_id IN ( SELECT id FROM Toppers );
+
+Select Department, sum(Salary) from Worker 
+GROUP BY Department ORDER BY sum(salary) asc
+LIMIT 2; 
+
+Select first_name, department, salary
+From worker
+Where department = 'admin'
+ORDER BY salary desc
+LIMIT 1 OFFSET 1;
+
