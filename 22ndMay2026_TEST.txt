@@ -1,0 +1,101 @@
+CREATE TABLE Bonus (
+	WORKER_REF_ID INT,
+	BONUS_AMOUNT INT(10),
+	BONUS_DATE DATETIME,
+	FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Bonus 
+	(WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE) VALUES
+		(001, 5000, '16-02-20'),
+		(002, 3000, '16-06-11'),
+		(003, 4000, '16-02-20'),
+		(001, 4500, '16-02-20'),
+		(002, 3500, '16-06-11');
+CREATE TABLE Title (
+	WORKER_REF_ID INT,
+	WORKER_TITLE CHAR(25),
+	AFFECTED_FROM DATETIME,
+	FOREIGN KEY (WORKER_REF_ID)
+		REFERENCES Worker(WORKER_ID)
+        ON DELETE CASCADE
+);
+
+INSERT INTO Title 
+	(WORKER_REF_ID, WORKER_TITLE, AFFECTED_FROM) VALUES
+ (001, 'Manager', '2016-02-20 00:00:00'),
+ (002, 'Executive', '2016-06-11 00:00:00'),
+ (008, 'Executive', '2016-06-11 00:00:00'),
+ (005, 'Manager', '2016-06-11 00:00:00'),
+ (004, 'Asst. Manager', '2016-06-11 00:00:00'),
+ (007, 'Executive', '2016-06-11 00:00:00'),
+ (006, 'Lead', '2016-06-11 00:00:00'),
+ (003, 'Lead', '2016-06-11 00:00:00');
+
+QUESTION ANSWER 
+---------------------------------------
+1. Write an SQL query to fetch “FIRST_NAME” from Worker table using the alias name as <WORKER_NAME>
+
+select First_name as Worker_Name from worker;
+
+2. Write an SQL query to fetch unique values of DEPARTMENT from Worker table.
+
+select Distinct department from worker;
+
+3. Write an SQL query to print details for Workers with the first name as “Vipul” and “Satish” from Worker table. (without OR condition)
+
+select * from worker
+where first_name in ('Vipul','Satish');
+
+4. Write an SQL query to print details of the Workers whose FIRST_NAME contains ‘a’.
+
+Select * from Worker
+where first_name like '%a%';
+
+5. Write an SQL query to print details of the Workers whose FIRST_NAME ends with ‘a’.
+
+Select * From worker where first_name like '%a';
+
+6. Write an SQL query to print details of the admin whose SALARY lies between 100000 and 500000.
+
+select * from worker where department = 'Admin'
+and salary > 100000 and salary < 500000;
+
+7. Write an SQL query to fetch the count of employees working in the department ‘Admin’.
+
+select COUNT(*) FROM WORKER
+where department = 'Admin';
+
+8. Write an SQL query to show the second highest salary from a table.
+
+Select Distinct salary from worker order by salary
+ DESC LIMIT 1 OFFSET 1;
+
+9. Write an SQL query to fetch the departments that have less than three people in it.
+
+Select DEPARTMENT
+from Worker
+group by department
+having COUNT(*) < 3;
+
+10. Write an SQL query to show all departments along with the total number of people in there.
+
+Select department, COUNT(*)
+From Worker
+GROUP BY  department;
+
+11. Write an SQL query to print the name of employees having the highest salary in each department.
+
+select First_name, department, salary
+from WORKER A
+where salary = (
+select MAX(Salary) from WORKER B
+where A.Department = B.Department );
+
+
+
+
+
+

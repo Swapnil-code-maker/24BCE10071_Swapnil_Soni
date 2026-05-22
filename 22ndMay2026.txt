@@ -1,0 +1,45 @@
+use Vitbhopal;
+
+CREATE TABLE departments(
+    did INT PRIMARY KEY,
+    dname VARCHAR(25) NOT NULL UNIQUE
+);
+
+INSERT INTO departments VALUES
+(101, 'CSE'),
+(102, 'ECE'),
+(103, 'Civil'),
+(106, 'Aero'),
+(107, 'Mechanical');
+
+SELECT * FROM departments;
+
+CREATE TABLE HOD (
+    Hid INT PRIMARY KEY,
+    Hname VARCHAR(30)
+);
+
+INSERT INTO HOD VALUES
+(101, 'Swapnil'),
+(102, 'Anushka'),
+(104, 'Manas'),
+(105, 'Debnath');
+
+SELECT *FROM departments
+CROSS JOIN HOD ORDER BY did;
+
+SELECT *FROM departments
+INNER JOIN HOD where departments.did = HOD.Hid;
+
+SELECT *FROM departments
+INNER JOIN HOD on departments.did = HOD.Hid;
+
+SELECT * FROM departments
+NATURAL JOIN HOD;
+
+SELECT *FROM departments
+LEFT OUTER JOIN HOD ON departments.did = HOD.Hid
+ORDER BY did ASC;
+
+
+
