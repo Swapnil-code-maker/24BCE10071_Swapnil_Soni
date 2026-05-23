@@ -1,0 +1,162 @@
+CREATE TABLE Departments (
+dept_id INT PRIMARY KEY,
+dept_name VARCHAR(50) NOT NULL,
+location VARCHAR(50)
+);
+INSERT INTO Departments (dept_id, dept_name, location) VALUES
+(10, 'Finance', 'New York'),
+(20, 'IT', 'San Francisco'),
+(30, 'Sales', 'Chicago'),
+(40, 'Marketing', 'Los Angeles');
+
+CREATE TABLE Jobs (
+job_id INT PRIMARY KEY,
+job_title VARCHAR(50),
+min_salary DECIMAL(10,2),
+max_salary DECIMAL(10,2)
+);
+INSERT INTO Jobs (job_id, job_title, min_salary, max_salary) VALUES
+(1, 'Manager', 80000.00, 150000.00),
+(2, 'Developer', 60000.00, 110000.00),
+(3, 'Analyst', 50000.00, 90000.00),
+(4, 'Intern', 30000.00, 45000.00);
+
+CREATE TABLE Employees (
+emp_id INT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+manager_id INT,
+dept_id INT,
+job_id INT,
+salary DECIMAL(10,2),
+hire_date DATE,
+FOREIGN KEY (dept_id) REFERENCES Departments(dept_id),
+FOREIGN KEY (job_id) REFERENCES Jobs(job_id)
+);
+INSERT INTO Employees (emp_id, name, manager_id, dept_id, job_id, salary, hire_date) VALUES
+-- Top Level Manager
+(501, 'Alice', NULL, 10, 1, 120000.00, '2015-01-01'),
+-- IT Dept Staff
+(503, 'Charlie', 501, 20, 1, 95000.00, '2016-05-20'),
+(504, 'David', 503, 20, 2, 85000.00, '2019-11-01'),
+(505, 'Eve', 503, 20, 2, 78000.00, '2020-02-15'),
+-- Finance Dept Staff
+(502, 'Bob', 501, 10, 3, 55000.00, '2018-03-12'),
+-- Sales Dept Staff
+(506, 'Frank', 501, 30, 3, 52000.00, '2021-06-21'),
+-- Marketing (unassigned to manager for complexity)
+(507, 'Grace', NULL, 40, 2, 72000.00, '2022-08-10');
+
+
+----------------------------------------------------------Questions and Answers --------------------------------------------------------------------
+
+Q1.   [JOINS] List the name of each employee along with their job title and department name.
+
+Select a.name, b.job_title, c.dept_name
+from employees a
+inner join jobs b
+on a.job_id = b.job_id
+inner join departments c
+on a.dept_id = c.dept_id;
+
+Q2. [SUBQUERY] Find all employees whose salary is higher than the average salary of the 'IT' department.
+
+Select * from employees
+where salary > ( Select AVG(salary) from employees
+where dept_id = ( Select dept_id from departments
+where dept_name = 'IT' ) );
+
+Q3. [GROUP BY] Calculate the total salary expenditure for each department name (not ID).
+
+Select d.dept_name, SUM(e.salary) from employees e
+INNER JOIN departments d
+on e.dept_id = d.dept_id
+group by d.dept_name;
+
+Q4.[HAVING] Display departments that have more than 2 employees and an average salary above 70,000.
+
+Select d.dept_name, COUNT(*) , AVG(e.salary) from Employees e
+inner join departments d
+on e.dept_id = d.dept_id
+group by d.dept_name
+HAVING COUNT(*) > 2
+and avg(e.salary) > 70000;
+
+Q5.[SELF JOIN] Retrieve a list of employee names and their respective manager's names.
+
+SELECT  E.name as Employee, M.name as Manager from Employees E
+LEFT JOIN Employees M
+on E.manager_id = M.emp_id;
+
+Q6. [ORDER BY] Find the top 3 highest-paid employees and list them in descending order.
+
+Select name, salary from employees
+order by salary desc LIMIT 3;
+
+
+Q8. [GROUP BY] Find the number of employees hired each year.
+
+Select year(Hire_date) as Hire_year, COUNT(emp_id) from employees
+GROUP BY year(hire_date);
+
+Q9. [HAVING] List job titles where the maximum salary of an employee in that role is less than 100,000.
+
+Select j.job_title from jobs j
+JOIN employees e on j.job_id = e.job_id
+GROUP BY j.job_title HAVING MAX(e.salary) < 100000;
+
+10. [SUBQUERY] Find the names of employees who work in the same department as 'David'.
+
+Select name from employees
+where dept_id = ( Select dept_id from employees where name = 'David');
+ 
+Q11. [MULTI-TABLE JOIN] Show all department names even if they have no employees assigned to them.
+
+Select d.dept_name, e.name from Departments d
+LEFT JOIN employees e on d.dept_id = e.dept_id;
+
+Q12. [COMPLEX FILTER] Find employees who were hired between 2018 and 2020 and earn more than 60,000.
+Select name from employees
+where Hire_date between '2018-01-01' and '2020-12-31' AND salary > 60000;
+
+Q13. [CORRELATED SUBQUERY] Find employees who earn more than the average salary of their own department.
+
+Select name, salary from employees E1
+where Salary > ( Select AVG(salary)  from employees E2 
+    where E2.dept_id = E1.dept_id );
+
+Q14. [JOINS] Find the job title and salary of the employee with ID 504.
+
+Select j.job_title, e.salary from employees e
+join jobs j on e.job_id = j.job_id where e.emp_id = 504;
+
+Q15. [GROUP BY] For each manager (by ID), find the minimum salary of the people reporting to them.
+
+Select Manager_id, MIN(salary) from employees
+Where Manager_id is not null group by Manager_id;
+
+Q16. [SUBQUERY] List departments that do not have any 'Analysts'.
+
+Select dept_name from departments
+where Dept_id not in ( Select dept_id from employees 
+    where job_id = 3 );
+
+Q17. [AGGREGATION] Find the difference between the highest and lowest salary in the company.
+
+Select Max(salary) - Min(salary) from employees;
+
+Q18. [JOIN + ORDER BY] Display employee names and hire dates, sorted by department name (A-Z) and then by salary (High to Low).
+ 
+Select d.dept_name, e.name, e.salary from employees e
+JOIN departments d on e.dept_id = d.dept_id
+order by d.dept_name ASC, e.salary Desc;
+
+Q19. [HAVING] Identify managers (by ID) who manage more than 2 people.
+ Select manager_id from employees
+GROUP BY  manager_id Having COUNT(Emp_id) > 2;
+
+Q20. [SUBQUERY] Find the employee(s) with the third-highest salary.
+
+Select Name, salary  from Employees
+ORDER salary DESC
+LIMIT 1 OFFSET 2;
+

@@ -1,0 +1,228 @@
+CREATE TABLE Departments (
+dept_id INT PRIMARY KEY,
+dept_name VARCHAR(50) NOT NULL,
+location_id VARCHAR(50) NOT NULL
+);
+
+INSERT INTO Departments VALUES
+(10, 'Consulting', 'NYC'),
+(20, 'Engineering', 'SF'),
+(30, 'R&D', 'London'),
+(40, 'Sales', 'NYC'),
+(50, 'HR', 'SF'),
+(60, 'Admin', 'London');
+
+CREATE TABLE Employees (
+employee_id INT PRIMARY KEY,
+employee_name VARCHAR(50) NOT NULL,
+manager_id INT,
+dept_id INT,
+salary DECIMAL(10,2) NOT NULL,
+FOREIGN KEY (dept_id)
+REFERENCES Departments(dept_id)
+);
+
+INSERT INTO Employees VALUES
+(100, 'Alice Smith', NULL, 10, 180000.00),
+(101, 'Bob Johnson', 100, 20, 120000.00),
+(102, 'Charlie Brown', 101, 20, 95000.00),
+(103, 'Diana Prince', 100, 30, 110000.00),
+(104, 'Evan Clark', 103, 30, 85000.00),
+(105, 'Fiona Glen', 101, 20, 90000.00),
+(106, 'George King', 100, 40, 75000.00),
+(107, 'Hannah Lee', 103, 30, 88000.00),
+(108, 'Ivan Rossi', 100, 50, 60000.00),
+(109, 'Jane Doe', 101, 20, 125000.00),
+(110, 'Kevin Blue', 104, 30, 86000.00);
+
+CREATE TABLE Projects (
+project_id INT PRIMARY KEY,
+project_name VARCHAR(50) NOT NULL,
+client_name VARCHAR(50) NOT NULL,
+start_date DATE NOT NULL,
+dept_id INT,
+FOREIGN KEY (dept_id)
+REFERENCES Departments(dept_id)
+);
+
+INSERT INTO Projects VALUES
+(5001, 'Aurora Migration', 'GlobalTech Solutions', '2023-01-15', 20),
+(5002, 'Synergy App Dev', 'Zenith Corp', '2023-05-20', 30),
+(5003, 'Q4 Sales Strategy', 'Apex Industries', '2024-01-01', 40),
+(5004, 'Global Expansion', 'GlobalTech Solutions', '2024-03-10', 10),
+(5005, 'Internal HR Tool', 'Internal', '2024-02-01', 50),
+(5006, 'Data Analytics', 'Zenith Corp', '2022-11-01', 20),
+(5007, 'Future Tech R&D', 'R&D Dept', '2024-06-01', 30);
+
+CREATE TABLE Assignments (
+assignment_id INT PRIMARY KEY,
+employee_id INT,
+project_id INT,
+hours_worked INT NOT NULL,
+start_date DATE NOT NULL,
+FOREIGN KEY (employee_id)
+REFERENCES Employees(employee_id),
+FOREIGN KEY (project_id)
+REFERENCES Projects(project_id)
+);
+
+INSERT INTO Assignments VALUES
+(1, 101, 5001, 150, '2023-01-15'),
+(2, 102, 5001, 160, '2023-01-15'),
+(3, 105, 5001, 140, '2023-02-01'),
+(4, 103, 5002, 80, '2023-05-20'),
+(5, 104, 5002, 70, '2023-06-01'),
+(6, 106, 5003, 5, '2024-01-01'),
+(7, 100, 5004, 20, '2024-03-10'),
+(8, 107, 5002, 75, '2023-05-25'),
+(9, 109, 5006, 200, '2022-11-01'),
+(10, 101, 5006, 250, '2022-11-01'),
+(11, 102, 5006, 180, '2022-12-01'),
+(12, 110, 5007, 10, '2024-06-01');
+
+
+
+
+
+1.List the Employee Name, their Department Name, and the Location Name for all employees.
+
+Select E.employee_name, D.dept_name, D.location_id
+from Employees E  INNER JOIN departments D
+on E.dept_id = D.dept_id;
+
+2.Retrieve the Project Name, Client Name, and the Total Hours Worked on that project, but only for projects managed by the 'Consulting' department.
+
+Select p.project_name, p.client_name, sum(a.hours_worked)
+from projects p inner join assignments a
+on p.project_id = a.project_id
+inner join departments d
+on p.dept_id = d.dept_id
+where d.dept_name = 'consulting'
+group by p.project_name, p.client_name;
+
+
+3.Find the names of Employees who have worked on a project with Client Name 'GlobalTech Solutions'. List the Employee Name and Project Name.
+
+Select e.employee_name, p.project_name
+from employees e
+inner join assignments a
+on e.employee_id = a.employee_id
+inner join projects p
+on a.project_id = p.project_id
+where p.client_name = 'globaltech solutions';
+
+
+4.List all Departments that have no Employees currently assigned to them.
+
+Select d.dept_name from departments d
+LEFT JOIN Employees e
+on d.dept_id = e.dept_id
+where e.employee_id is null;
+
+
+
+5.Show the Manager Name, the Department Name they manage, and the total number of direct reports they have.
+
+Select m.employee_name, d.dept_name, COUNT(e.employee_id) from employees e
+inner join employees m
+on e.manager_id = m.employee_id
+inner join departments d
+on m.dept_id = d.dept_id
+group by m.employee_name, d.dept_name;
+
+
+
+6.Calculate the Average Hours Worked per Employee across all projects. List the Employee Name and the average hours
+
+Select e.employee_name, AVG(a.hours_worked) from employees e
+Inner Join assignments a
+on e.employee_id = a.employee_id
+GROUP BY  e.employee_name;
+
+
+
+7.Find the Department Name(s) that have an average salary above the company-wide average salary.
+
+Select d.dept_name from employees e
+Inner Join departments d
+on e.dept_id = d.dept_id
+Group by d.dept_name
+Having avg(e.salary) > ( select avg(salary) from employees);
+
+
+
+8.Identify the Client Name(s) whose projects have a total combined hours worked exceeding 500 hours.
+
+Select p.client_name from projects p
+Inner join assignments a
+on p.project_id = a.project_id
+Group by p.client_name
+Having SUM(a.hours_worked) > 500;
+
+
+
+10.Calculate the total number of employees assigned to each Project, but only include projects that have more than 5 employees assigned
+
+Select p.project_name, COUNT(Distinct a.employee_id) from projects p
+Inner join assignments a on p.project_id = a.project_id
+Group by p.project_name
+Having COUNT(Distinct a.employee_id) > 5;
+
+
+
+12.Retrieve the Department Name(s) that have employees assigned to more than one project.
+
+Select d.dept_name from departments d
+Inner join employees e
+on d.dept_id = e.dept_id
+Inner join assignments a
+on e.employee_id = a.employee_id
+Group by d.dept_name
+Having count(distinct a.project_id) > 1;
+
+
+13.Write a query to list the Employee Name and Project Name for any employee who has worked less than 10 hours on a project
+
+Select e.employee_name, p.project_name
+from employees e Inner join assignments a
+on e.employee_id = a.employee_id
+Inner join projects p
+on a.project_id = p.project_id
+Where a.hours_worked < 10;
+
+
+14.Find the Project Name(s) that have no assigned employees
+
+Select p.project_name from projects p
+Left join assignments a
+on p.project_id = a.project_id
+where a.assignment_id is null;
+
+
+16.Assuming the Assignments table has a start_date column, find the Employee Name and their oldest project start date.
+
+Select e.employee_name, MIN(a.start_date) from employees e
+Inner join assignments a
+on e.employee_id = a.employee_id
+Group by e.employee_name;
+
+
+17.Write a MySQL query using the DATE_FORMAT function to list all projects that were active in the year 2023.
+
+Select * from projects where start_date like '2023%';
+
+
+
+18.Use the MySQL-specific IFNULL function to list all Employee Names. If an employee has no manager, display "CEO" instead of NULL.
+
+Select Employee_name,
+ifnull(manager_id,'ceo')
+from employees;
+
+
+21.List the Employee Name and their Manager's Name, even if the employee has no manager, or if a potential manager has no employees reporting to them.
+
+Select e.employee_name, m.employee_name as manager_name from employees e
+Left join employees m
+on e.manager_id = m.employee_id;
+
