@@ -1,0 +1,93 @@
+show databases
+admin   40.00 KiB
+config  12.00 KiB
+local   80.00 KiB
+use db
+switched to db db
+db
+db
+db.dropDatabase
+[Function: dropDatabase] AsyncFunction {
+  apiVersions: [ 1, Infinity ],
+  returnsPromise: true,
+  serverVersions: [ '0.0.0', '999.999.999' ],
+  topologies: [ 'ReplSet', 'Standalone', 'Sharded', 'LoadBalanced' ],
+  returnType: { type: 'unknown', attributes: {} },
+  deprecated: false,
+  platforms: [ 'Compass', 'Browser', 'CLI' ],
+  isDirectShellCommand: false,
+  acceptsRawInput: false,
+  shellCommandCompleter: undefined,
+  newShellCommandCompleter: undefined,
+  help: [Function (anonymous)] Help
+}
+use vit
+switched to db vit
+show databases
+admin   40.00 KiB
+config  12.00 KiB
+local   80.00 KiB
+db.createCollection("StudentsVIT")
+{ ok: 1 }
+show collections
+StudentsVIT
+db.StudentsVIT.drop
+[Function: drop] AsyncFunction {
+  apiVersions: [ 1, Infinity ],
+  returnsPromise: true,
+  serverVersions: [ '0.0.0', '999.999.999' ],
+  topologies: [ 'ReplSet', 'Standalone', 'Sharded', 'LoadBalanced' ],
+  returnType: { type: 'unknown', attributes: {} },
+  deprecated: false,
+  platforms: [ 'Compass', 'Browser', 'CLI' ],
+  isDirectShellCommand: false,
+  acceptsRawInput: false,
+  shellCommandCompleter: undefined,
+  newShellCommandCompleter: undefined,
+  help: [Function (anonymous)] Help
+}
+show collections
+StudentsVIT
+show collections
+StudentsVIT
+db.StudentsVIT.drop()
+true
+show collections
+db.createCollection("Emloyee")
+{ ok: 1 }
+db.Employee.insert({name:"Swapnil",department:'CSE'})
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a14586ce7ed656ae5d53f71')
+  }
+}
+db.Employee.find()
+{
+  _id: ObjectId('6a14586ce7ed656ae5d53f71'),
+  name: 'Swapnil',
+  department: 'CSE'
+}
+db.Employee.insert({name:"Anu",loaction:'Ujjain',marks:100})
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a1458e1e7ed656ae5d53f72')
+  }
+}
+db.Employee.find()
+{
+  _id: ObjectId('6a14586ce7ed656ae5d53f71'),
+  name: 'Swapnil',
+  department: 'CSE'
+}
+{
+  _id: ObjectId('6a1458e1e7ed656ae5d53f72'),
+  name: 'Anu',
+  loaction: 'Ujjain',
+  marks: 100
+}
+vit
+
+
