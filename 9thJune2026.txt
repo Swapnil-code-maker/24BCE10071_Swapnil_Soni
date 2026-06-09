@@ -4,22 +4,6 @@ rs.initiate({
 
   members: [
 
-    { _id: 0, host: "localhost:27017" },
-
-    { _id: 1, host: "localhost:27018" },
-
-    { _id: 2, host: "localhost:27019" }
-
-  ]
-
-})
-MongoServerError[NoReplicationEnabled]: This node was not started with replication enabled.
-rs.initiate({
-
-  _id: "myReplSet",
-
-  members: [
-
     { _id: 0, host: "localhost:28017" },
 
     { _id: 1, host: "localhost:28018" },
@@ -29,5 +13,83 @@ rs.initiate({
   ]
 
 })
-MongoServerError[NoReplicationEnabled]: This node was not started with replication enabled.
-Swapnil
+{
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1781015695, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1781015695, i: 1 })
+}
+rs.status()
+{
+      lastWrittenWallTime: 2026-06-09T14:35:46.187Z,
+      lastHeartbeat: 2026-06-09T14:35:46.188Z,
+      lastHeartbeatRecv: 2026-06-09T14:35:45.284Z,
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'localhost:28017',
+      syncSourceId: 0,
+      infoMessage: '',
+      configVersion: 1,
+      configTerm: 1
+    },
+    {
+      _id: 2,
+      name: 'localhost:28019',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 51,
+      optime: { ts: Timestamp({ t: 1781015746, i: 1 }), t: Long('1') },
+      optimeDurable: { ts: Timestamp({ t: 1781015746, i: 1 }), t: Long('1') },
+      optimeWritten: { ts: Timestamp({ t: 1781015746, i: 1 }), t: Long('1') },
+      optimeDate: 2026-06-09T14:35:46.000Z,
+      optimeDurableDate: 2026-06-09T14:35:46.000Z,
+      optimeWrittenDate: 2026-06-09T14:35:46.000Z,
+      lastAppliedWallTime: 2026-06-09T14:35:46.187Z,
+      lastDurableWallTime: 2026-06-09T14:35:46.187Z,
+      lastWrittenWallTime: 2026-06-09T14:35:46.187Z,
+      lastHeartbeat: 2026-06-09T14:35:46.203Z,
+      lastHeartbeatRecv: 2026-06-09T14:35:45.284Z,
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'localhost:28017',
+      syncSourceId: 0,
+      infoMessage: '',
+      configVersion: 1,
+      configTerm: 1
+    }
+  ],
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1781015746, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1781015746, i: 1 })
+}
+use college
+switched to db college
+db.students.insertOne({
+  roll: 101,
+  name: "Swapnil"
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a2824e118a3bfee2d8a92e9')
+}
+db.students.find()
+{
+  _id: ObjectId('6a2824e118a3bfee2d8a92e9'),
+  roll: 101,
+  name: 'Swapnil'
+}
+myReplSet [direct: primary] college
+
+
